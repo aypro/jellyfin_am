@@ -38,19 +38,19 @@ Pick option **1** (system-wide `am`) or option **2** (rootless
 
 ### 2. Point `am` at this database
 
-After you've pushed this repo to GitHub (e.g. `https://github.com/<you>/jellyfin_am`),
-tell `am` to use it:
+After pushing this repo to GitHub (it lives at
+`https://github.com/aypro/jellyfin_am` by default), tell `am` to use
+it:
 
 ```sh
-am newrepo add https://raw.githubusercontent.com/<you>/jellyfin_am/main
+am newrepo add https://raw.githubusercontent.com/aypro/jellyfin_am/master
 am newrepo on
 am newrepo info   # confirm the source switched
 ```
 
-If you host it elsewhere (Codeberg, self-hosted Gitea that serves raw
-files, etc.), substitute the equivalent raw URL. The repo only needs
-to be reachable via plain HTTP GET on `programs/x86_64/<appname>` and
-`programs/x86_64-apps`.
+(Fork it first if you want to maintain your own additions — `newrepo`
+just needs any reachable raw URL serving `programs/x86_64/<appname>`
+and `programs/x86_64-apps`.)
 
 ### 3. Install
 

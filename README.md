@@ -43,7 +43,7 @@ After pushing this repo to GitHub (it lives at
 it:
 
 ```sh
-am newrepo add https://raw.githubusercontent.com/aypro/jellyfin_am/master
+am newrepo add https://raw.githubusercontent.com/aypro/jellyfin_am/main
 am newrepo on
 am newrepo info   # confirm the source switched
 ```

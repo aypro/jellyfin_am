@@ -12,9 +12,9 @@ printf '\n%s' "rm -f /usr/local/share/applications/$APP-AM.desktop" >> ../remove
 chmod a+x ../remove || exit 1
 
 # DOWNLOAD AND PREPARE THE APP, $version is also used for updates
-version=$(curl -Ls https://github.com/jellyfin/jellyfin-desktop/actions/workflows/build-linux-appimage.yml | grep -oE 'commit/[a-f0-9]{7,40}' | head -1 | sed 's#commit/##')
+version=$(curl -Ls "https://api.github.com/repos/jellyfin/jellyfin-desktop/actions/workflows/build-appimage.yml/runs?branch=master&status=success&per_page=1" | grep -m1 '"head_sha"' | sed -E 's/.*"head_sha": *"([a-f0-9]+)".*/\1/')
 [ -n "$version" ] || { echo "Error: could not determine latest nightly commit SHA"; exit 1; }
-wget "https://nightly.link/jellyfin/jellyfin-desktop/workflows/build-linux-appimage/main/linux-appimage-x86_64.zip" -O jellyfin-nightly.zip || exit 1
+wget "https://nightly.link/jellyfin/jellyfin-desktop/workflows/build-appimage/master/linux-appimage-x86_64.zip" -O jellyfin-nightly.zip || exit 1
 [ -e ./*7z ] && 7z x ./*7z && rm -f ./*7z
 [ -e ./*tar.* ] && tar fx ./*tar.* && rm -f ./*tar.*
 [ -e ./*zip ] && unzip -qq ./*zip 1>/dev/null && rm -f ./*zip
@@ -34,12 +34,12 @@ set -u
 APP=jellyfin-desktop-nightly
 SITE="https://github.com/jellyfin/jellyfin-desktop"
 version0=$(cat "/opt/$APP/version")
-version=$(curl -Ls https://github.com/jellyfin/jellyfin-desktop/actions/workflows/build-linux-appimage.yml | grep -oE 'commit/[a-f0-9]{7,40}' | head -1 | sed 's#commit/##')
+version=$(curl -Ls "https://api.github.com/repos/jellyfin/jellyfin-desktop/actions/workflows/build-appimage.yml/runs?branch=master&status=success&per_page=1" | grep -m1 '"head_sha"' | sed -E 's/.*"head_sha": *"([a-f0-9]+)".*/\1/')
 [ -n "$version" ] || { echo "Error getting link"; exit 1; }
 if [ "$version" != "$version0" ]; then
 	mkdir "/opt/$APP/tmp" && cd "/opt/$APP/tmp" || exit 1
 	notify-send "A new version of $APP is available, please wait"
-	wget "https://nightly.link/jellyfin/jellyfin-desktop/workflows/build-linux-appimage/main/linux-appimage-x86_64.zip" -O jellyfin-nightly.zip || exit 1
+	wget "https://nightly.link/jellyfin/jellyfin-desktop/workflows/build-appimage/master/linux-appimage-x86_64.zip" -O jellyfin-nightly.zip || exit 1
 	[ -e ./*7z ] && 7z x ./*7z && rm -f ./*7z
 	[ -e ./*tar.* ] && tar fx ./*tar.* && rm -f ./*tar.*
 	[ -e ./*zip ] && unzip -qq ./*zip 1>/dev/null && rm -f ./*zip
